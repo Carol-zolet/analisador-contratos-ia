@@ -1,0 +1,40 @@
+﻿# docker-compose.yml
+version: '3.8'
+
+services:
+  # Serviço do Banco de Dados PostgreSQL
+  db:
+    image: postgres:13-alpine
+    # Garante que os dados do banco não sejam perdidos ao reiniciar o container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    # Define as credenciais e o nome do banco de dados
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=analisador_db
+    # Mapeia a porta do container para a sua máquina (opcional, bom para depuração)
+    ports:
+      - "5432:5432"
+
+  # Serviço da Aplicação Streamlit
+  webapp:
+    # Constrói a imagem a partir do Dockerfile na pasta atual
+    build: .
+    # Mapeia a porta do Streamlit para a sua máquina
+    ports:
+      - "8501:8501"
+    # Monta a pasta atual dentro do container para refletir as alterações no código
+    volumes:
+      - .:/app
+    # Passa as variáveis de ambiente necessárias para a aplicação
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@db/analisador_db
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    # Garante que a aplicação só inicie depois que o banco de dados estiver pronto
+    depends_on:
+      - db
+
+# Define o volume para persistência dos dados do banco
+volumes:
+  postgres_data:

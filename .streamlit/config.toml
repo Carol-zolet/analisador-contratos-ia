@@ -1,0 +1,16 @@
+[theme]
+# A cor principal para bot�es, seletores, etc.
+primaryColor="#FF4B4B"
+
+# Cor de fundo principal da aplica��o
+backgroundColor="#0E1117"
+
+# Cor de fundo para a barra lateral e outros elementos secund�rios
+secondaryBackgroundColor="#262730"
+
+# Cor do texto principal
+textColor="#FAFAFA"
+
+# Fonte a ser usada
+font="sans serif"
+
